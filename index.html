@@ -1,89 +1,39 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Virtual Escape Room — Cinematic</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mysterious Adventure Escape Room</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="app" class="app">
-    <header class="topbar">
-      <div class="left">
-        <div class="logo">Escape Room</div>
-        <div class="timer" id="timer">20:00</div>
-      </div>
-      <div class="right">
-        <button id="hintBtn" class="btn small">Use Hint</button>
-        <button id="musicBtn" class="btn small">Play Music</button>
-        <button id="exportBtn" class="btn small">Export Save</button>
-        <input id="importInput" type="file" accept=".json" style="display:none">
-        <button id="importBtn" class="btn small">Import Save</button>
-      </div>
-    </header>
-
-    <main id="stage" class="stage cinematic">
-      <!-- The stage background updates per room -->
-      <div class="room-overlay">
-        <div id="roomTitle" class="room-title">Lobby</div>
-        <div id="roomSubtitle" class="room-subtitle">Find the clues hidden in the furniture and portraits.</div>
-
-        <div class="content-grid">
-          <div class="panel left-panel" id="leftPanel">
-            <!-- dynamic puzzle content renders here -->
-          </div>
-
-          <div class="panel center-panel" id="centerPanel">
-            <!-- large interactive area -->
-          </div>
-
-          <aside class="panel right-panel" id="rightPanel">
-            <div class="inventory card">
-              <div class="card-title">Inventory</div>
-              <div id="inventoryList" class="inventory-list"></div>
-            </div>
-
-            <div class="status card">
-              <div class="card-title">Status</div>
-              <ul id="statusList" class="status-list"></ul>
-            </div>
-
-            <div class="controls card">
-              <div class="card-title">Controls</div>
-              <button id="lobbyBtn" class="btn">Lobby</button>
-              <button id="studyBtn" class="btn">Study</button>
-              <button id="vaultBtn" class="btn">Vault</button>
-              <button id="finalBtn" class="btn">Final</button>
-              <button id="resetBtn" class="btn warn">Reset Save</button>
-            </div>
-          </aside>
-        </div>
-
-      </div>
-    </main>
-
-    <footer class="bottombar">
-      <div class="left">Tip: Open notes in your inventory to reveal clues.</div>
-      <div class="right small dim">Images from Unsplash (demo). Replace with local files for production.</div>
-    </footer>
+  <!-- Start Screen -->
+  <div id="start-screen" class="fade-in">
+    <h1>Mysterious Adventure Escape Room</h1>
+    <button id="start-btn">▶ Start Adventure</button>
   </div>
 
-  <!-- Modal for notes / puzzles / messages -->
-  <div id="modal" class="modal hidden" aria-hidden="true">
-    <div class="modal-backdrop" id="modalBackdrop"></div>
-    <div class="modal-window" role="dialog" aria-modal="true">
-      <div class="modal-header">
-        <div id="modalTitle" class="modal-title">Modal</div>
-        <button id="modalClose" class="btn small">Close</button>
-      </div>
-      <div id="modalBody" class="modal-body"></div>
+  <!-- Game Container -->
+  <div id="game-container" class="hidden">
+    <audio id="bg-music" loop src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_9c40291cc1.mp3?filename=dark-ambient-110624.mp3"></audio>
+    <audio id="victory-sound" src="https://cdn.pixabay.com/download/audio/2021/09/10/audio_865e2f3b27.mp3?filename=applause-6345.mp3"></audio>
+
+    <div id="hud">
+      <h1 id="room-name">Lobby</h1>
+      <div id="timer">Time: 15:00</div>
+      <div id="inventory"></div>
+      <button id="music-toggle">🎵</button>
     </div>
+
+    <div id="room"></div>
+    <div id="interaction"></div>
   </div>
 
-  <!-- hidden audio (ambient stream example) -->
-  <audio id="ambient" loop crossorigin="anonymous">
-    <source src="https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3" type="audio/mpeg">
-  </audio>
+  <!-- Victory Screen -->
+  <div id="victory-screen" class="hidden">
+    <h1>🎉 You Escaped! 🎉</h1>
+    <button id="restart-btn">Restart Adventure</button>
+  </div>
 
   <script src="script.js"></script>
 </body>
