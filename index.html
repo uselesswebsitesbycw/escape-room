@@ -1,48 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Mysterious Adventure Escape Room</title>
-<link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mysterious Adventure Escape Room</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+  <!-- Start Screen -->
+  <div id="start-screen" class="fade-in">
+    <h1>Mysterious Adventure Escape Room</h1>
+    <button id="start-btn">▶ Start Adventure</button>
+  </div>
 
-<!-- Start Screen -->
-<div id="start-screen" class="fade-in">
-<h1>Mysterious Adventure Escape Room</h1>
-<button id="start-btn">▶ Start Adventure</button>
-</div>
+  <!-- Game Container -->
+  <div id="game-container" class="hidden">
+    <audio id="bg-music" loop src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_9c40291cc1.mp3?filename=dark-ambient-110624.mp3"></audio>
+    <audio id="victory-sound" src="https://cdn.pixabay.com/download/audio/2021/09/10/audio_865e2f3b27.mp3?filename=applause-6345.mp3"></audio>
 
+    <!-- HUD -->
+    <div id="hud">
+      <h1 id="room-name">Lobby</h1>
+      <div id="timer">Time: 15:00</div>
+      <div id="inventory"></div>
+      <button id="music-toggle">🎵</button>
+    </div>
 
-<!-- Game Container -->
-<div id="game-container" class="hidden">
-<audio id="bg-music" loop src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_9c40291cc1.mp3?filename=dark-ambient-110624.mp3"></audio>
-<audio id="victory-sound" src="https://cdn.pixabay.com/download/audio/2021/09/10/audio_865e2f3b27.mp3?filename=applause-6345.mp3"></audio>
+    <!-- Main Room Area -->
+    <div id="room"></div>
+    <div id="interaction"></div>
+  </div>
 
+  <!-- Victory Screen -->
+  <div id="victory-screen" class="hidden">
+    <canvas id="confetti-canvas"></canvas>
+    <h1>🎉 You Escaped! 🎉</h1>
+    <button id="restart-btn">Restart Adventure</button>
+  </div>
 
-<div id="hud">
-<h1 id="room-name">Lobby</h1>
-<div id="timer">Time: 15:00</div>
-<div id="inventory"></div>
-<button id="music-toggle">🎵</button>
-</div>
-
-
-<div id="room"></div>
-<div id="interaction"></div>
-</div>
-
-
-<!-- Victory Screen -->
-<div id="victory-screen" class="hidden">
-<canvas id="confetti-canvas"></canvas>
-<h1>🎉 You Escaped! 🎉</h1>
-<button id="restart-btn">Restart Adventure</button>
-</div>
-
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
