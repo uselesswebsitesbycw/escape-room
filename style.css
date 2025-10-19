@@ -1,46 +1,15 @@
-/* Basic styles */
-body {
-  margin:0;
-  font-family:'Poppins',sans-serif;
-  background:#000;
-  color:#fff;
-  overflow:hidden;
-}
-.hidden{ display:none; }
-
-/* Start & Victory screens */
-#start-screen, #victory-screen{
-  position:absolute; top:0; left:0;
-  width:100vw; height:100vh;
-  display:flex; flex-direction:column; justify-content:center; align-items:center;
-  text-align:center;
-  background:url('https://images.unsplash.com/photo-1581091012184-42dbbe38500b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1600') center/cover no-repeat;
-}
-#start-screen h1,#victory-screen h1{
-  font-size:3em; margin-bottom:20px;
-  text-shadow:2px 2px 10px #000;
-}
-button{
-  background:#fff; color:#000; border:none; padding:15px 30px; border-radius:10px;
-  cursor:pointer; font-weight:600; font-size:1em; transition:transform 0.2s;
-}
-button:hover{ transform:scale(1.05); }
-
-/* Game container */
-#game-container{
-  width:100vw; height:100vh; display:flex; flex-direction:column; justify-content:space-between;
-}
-
-/* HUD */
-#hud{ display:flex; justify-content:space-between; align-items:center; padding:20px; background:rgba(0,0,0,0.5); }
-#room-name{ font-size:1.5em; text-shadow:1px 1px 5px #000; letter-spacing:2px; }
-#timer{ font-size:1.2em; background:rgba(255,255,255,0.2); padding:5px 15px; border-radius:10px; }
-#inventory{ display:flex; gap:10px; }
-.inventory-item{ width:40px; height:40px; border:2px solid #fff; border-radius:6px; background-size:cover; background-position:center; }
-
-/* Room and Interaction */
-#room{ width:100%; height:80%; background-size:cover; background-position:center; }
-#interaction{ position:absolute; bottom:50px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.7); padding:20px; border-radius:10px; max-width:80%; display:none; z-index:10; }
-
-/* Confetti canvas */
-#confetti-canvas{ position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; }
+body{margin:0;font-family:'Poppins',sans-serif;background:#000;color:#fff;overflow:hidden;}
+.hidden{display:none;}
+#start-screen,#victory-screen{position:absolute;top:0;left:0;width:100vw;height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;background:url('https://images.unsplash.com/photo-1581091012184-42dbbe38500b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1600') center/cover no-repeat;}
+#start-screen h1,#victory-screen h1{font-size:3em;margin-bottom:20px;text-shadow:2px 2px 10px #000;}
+button{background:#fff;color:#000;border:none;padding:15px 30px;border-radius:10px;cursor:pointer;font-weight:600;font-size:1em;transition:transform 0.2s;}
+button:hover{transform:scale(1.05);}
+#game-container{width:100vw;height:100vh;display:flex;flex-direction:column;justify-content:space-between;}
+#hud{display:flex;justify-content:space-between;align-items:center;padding:20px;background:rgba(0,0,0,0.5);}
+#room-name{font-size:1.5em;text-shadow:1px 1px 5px #000;letter-spacing:2px;}
+#timer{font-size:1.2em;background:rgba(255,255,255,0.2);padding:5px 15px;border-radius:10px;}
+#inventory{display:flex;gap:10px;}
+.inventory-item{width:40px;height:40px;border:2px solid #fff;border-radius:6px;background-size:cover;background-position:center;}
+#room{width:100%;height:80%;background-size:cover;background-position:center;}
+#interaction{position:absolute;bottom:50px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.7);padding:20px;border-radius:10px;max-width:80%;display:none;z-index:10;}
+#confetti-canvas{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;}
