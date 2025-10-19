@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Virtual Escape Room — Cinematic</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app" class="app">
+    <header class="topbar">
+      <div class="left">
+        <div class="logo">Escape Room</div>
+        <div class="timer" id="timer">20:00</div>
+      </div>
+      <div class="right">
+        <button id="hintBtn" class="btn small">Use Hint</button>
+        <button id="musicBtn" class="btn small">Play Music</button>
+        <button id="exportBtn" class="btn small">Export Save</button>
+        <input id="importInput" type="file" accept=".json" style="display:none">
+        <button id="importBtn" class="btn small">Import Save</button>
+      </div>
+    </header>
+
+    <main id="stage" class="stage cinematic">
+      <!-- The stage background updates per room -->
+      <div class="room-overlay">
+        <div id="roomTitle" class="room-title">Lobby</div>
+        <div id="roomSubtitle" class="room-subtitle">Find the clues hidden in the furniture and portraits.</div>
+
+        <div class="content-grid">
+          <div class="panel left-panel" id="leftPanel">
+            <!-- dynamic puzzle content renders here -->
+          </div>
+
+          <div class="panel center-panel" id="centerPanel">
+            <!-- large interactive area -->
+          </div>
+
+          <aside class="panel right-panel" id="rightPanel">
+            <div class="inventory card">
+              <div class="card-title">Inventory</div>
+              <div id="inventoryList" class="inventory-list"></div>
+            </div>
+
+            <div class="status card">
+              <div class="card-title">Status</div>
+              <ul id="statusList" class="status-list"></ul>
+            </div>
+
+            <div class="controls card">
+              <div class="card-title">Controls</div>
+              <button id="lobbyBtn" class="btn">Lobby</button>
+              <button id="studyBtn" class="btn">Study</button>
+              <button id="vaultBtn" class="btn">Vault</button>
+              <button id="finalBtn" class="btn">Final</button>
+              <button id="resetBtn" class="btn warn">Reset Save</button>
+            </div>
+          </aside>
+        </div>
+
+      </div>
+    </main>
+
+    <footer class="bottombar">
+      <div class="left">Tip: Open notes in your inventory to reveal clues.</div>
+      <div class="right small dim">Images from Unsplash (demo). Replace with local files for production.</div>
+    </footer>
+  </div>
+
+  <!-- Modal for notes / puzzles / messages -->
+  <div id="modal" class="modal hidden" aria-hidden="true">
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+    <div class="modal-window" role="dialog" aria-modal="true">
+      <div class="modal-header">
+        <div id="modalTitle" class="modal-title">Modal</div>
+        <button id="modalClose" class="btn small">Close</button>
+      </div>
+      <div id="modalBody" class="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- hidden audio (ambient stream example) -->
+  <audio id="ambient" loop crossorigin="anonymous">
+    <source src="https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3" type="audio/mpeg">
+  </audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
