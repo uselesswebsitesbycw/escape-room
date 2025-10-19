@@ -15,6 +15,8 @@ const timerEl=document.getElementById('timer');
 const inventoryEl=document.getElementById('inventory');
 const interactionEl=document.getElementById('interaction');
 const musicEl=document.getElementById('bg-music');
+const clickSound=document.getElementById('click-sound');
+const failSound=document.getElementById('fail-sound');
 const victorySound=document.getElementById('victory-sound');
 const confettiCanvas=document.getElementById('confetti-canvas');
 const confettiCtx=confettiCanvas.getContext('2d');
@@ -23,9 +25,33 @@ const confettiCtx=confettiCanvas.getContext('2d');
 // Game Data
 // -------------------
 const rooms={
-Lobby:{bg:'https://source.unsplash.com/1600x900/?lobby',desc:'You are in the lobby. A door leads to the Study.',items:['keycard'],next:'Study'},
-Study:{bg:'https://source.unsplash.com/1600x900/?library',desc:'A dim study. Solve the keypad puzzle to unlock the Final Room.',items:['magnifying glass'],puzzle:'keypad',next:'Final'},
-Final:{bg:'https://source.unsplash.com/1600x900/?sunrise',desc:'Enter the secret code to escape!',puzzle:'final'}
+Lobby:{
+  bg:'https://source.unsplash.com/1600x900/?lobby',
+  desc:'You are in the lobby. Look around for items to begin your adventure.',
+  items:['keycard'],
+  objects:[{name:'desk',desc:'A wooden desk with a drawer.',item:'map'}],
+  next:'Study'
+},
+Study:{
+  bg:'https://source.unsplash.com/1600x900/?library',
+  desc:'A dim study. Solve the keypad to continue.',
+  puzzle:'keypad',
+  items:['magnifying glass'],
+  objects:[{name:'bookshelf',desc:'A tall bookshelf filled with books.',item:'note'}],
+  next:'Vault'
+},
+Vault:{
+  bg:'https://source.unsplash.com/1600x900/?vault',
+  desc:'A metallic vault. Decode the cipher to proceed.',
+  puzzle:'cipher',
+  objects:[{name:'safe',desc:'A locked safe. Maybe a key or code will open it.'}],
+  next:'Final'
+},
+Final:{
+  bg:'https://source.unsplash.com/1600x900/?sunrise',
+  desc:'This is the final room. Enter the secret code to escape.',
+  puzzle:'final'
+}
 };
 
 let currentRoom='Lobby';
@@ -37,19 +63,22 @@ let timerInterval;
 // Event Listeners
 // -------------------
 startBtn.addEventListener('click',()=>{
-startScreen.classList.add('hidden');
-gameContainer.classList.remove('hidden');
-musicEl.play();
-startGame();
+  startScreen.classList.add('hidden');
+  gameContainer.classList.remove('hidden');
+  musicEl.play();
+  startGame();
 });
-
 restartBtn.addEventListener('click',()=>location.reload());
 musicToggle.addEventListener('click',()=>{if(musicEl.paused)musicEl.play();else musicEl.pause();});
 
 // -------------------
 // Game Functions
 // -------------------
-function startGame(){updateRoom(); timerInterval=setInterval(updateTimer,1000);}
+function startGame(){
+  updateRoom();
+  timerInterval=setInterval(updateTimer,1000);
+}
+
 function updateRoom(){
   const room=rooms[currentRoom];
   nameEl.textContent=currentRoom;
@@ -57,55 +86,99 @@ function updateRoom(){
   interactionEl.style.display='block';
   interactionEl.innerHTML=`<p>${room.desc}</p>`;
 
+  // Items in room
   if(room.items){
     room.items.forEach(item=>{
       const btn=document.createElement('button');
       btn.textContent=`Pick up ${item}`;
-      btn.onclick=()=>addItem(item);
+      btn.className='interact-btn';
+      btn.onclick=()=>{addItem(item); clickSound.play();};
       interactionEl.appendChild(btn);
     });
   }
 
+  // Interactive objects
+  if(room.objects){
+    room.objects.forEach(obj=>{
+      const btn=document.createElement('button');
+      btn.textContent=`Inspect ${obj.name}`;
+      btn.className='interact-btn';
+      btn.onclick=()=>{inspectObject(obj); clickSound.play();};
+      interactionEl.appendChild(btn);
+    });
+  }
+
+  // Puzzles
   if(room.puzzle){
     const btn=document.createElement('button');
     btn.textContent='Solve Puzzle';
+    btn.className='interact-btn';
     btn.onclick=()=>openPuzzle(room.puzzle);
     interactionEl.appendChild(btn);
   }
 
+  // Next room button (if no puzzle)
   if(room.next && !room.puzzle){
     const btn=document.createElement('button');
     btn.textContent=`Go to ${room.next}`;
-    btn.onclick=()=>moveRoom(room.next);
+    btn.className='interact-btn';
+    btn.onclick=()=>{currentRoom=room.next; updateRoom(); clickSound.play();};
     interactionEl.appendChild(btn);
   }
 }
 
-function moveRoom(name){currentRoom=name; updateRoom();}
-function addItem(item){if(!inventory.includes(item)){inventory.push(item); const el=document.createElement('div'); el.className='inventory-item'; el.title=item; el.style.backgroundImage=`url('https://source.unsplash.com/100x100/?${item}')`; inventoryEl.appendChild(el);} alert(`${item} added!`);}
+function addItem(item){
+  if(!inventory.includes(item)){
+    inventory.push(item);
+    const el=document.createElement('div');
+    el.className='inventory-item';
+    el.title=item;
+    el.style.backgroundImage=`url('https://source.unsplash.com/100x100/?${item}')`;
+    inventoryEl.appendChild(el);
+    alert(`${item} added to inventory!`);
+  }
+}
+
+function inspectObject(obj){
+  alert(obj.desc);
+  if(obj.item) addItem(obj.item);
+}
 
 // -------------------
 // Puzzles
 // -------------------
 function openPuzzle(type){
   interactionEl.innerHTML='';
-  if(type==='keypad')interactionEl.innerHTML=`<p>Enter 3-digit code:</p><input id='code' maxlength='3'><button id='keypad-btn'>Enter</button>`;
-  else if(type==='final')interactionEl.innerHTML=`<p>Enter final code:</p><input id='final'><button id='final-btn'>Escape!</button>`;
-
-  if(type==='keypad')document.getElementById('keypad-btn').addEventListener('click',checkKeypad);
-  if(type==='final')document.getElementById('final-btn').addEventListener('click',checkFinal);
+  if(type==='keypad'){
+    interactionEl.innerHTML=`<p>Enter 3-digit code:</p><input id='code' maxlength='3'><button id='keypad-btn' class='interact-btn'>Enter</button>`;
+    document.getElementById('keypad-btn').addEventListener('click',checkKeypad);
+  }
+  else if(type==='cipher'){
+    interactionEl.innerHTML=`<p>Decode: "Wkh dqvzhu lv vxq" (shift 3)</p><input id='cipher'><button id='cipher-btn' class='interact-btn'>Enter</button>`;
+    document.getElementById('cipher-btn').addEventListener('click',checkCipher);
+  }
+  else if(type==='final'){
+    interactionEl.innerHTML=`<p>Enter final code:</p><input id='final'><button id='final-btn' class='interact-btn'>Escape!</button>`;
+    document.getElementById('final-btn').addEventListener('click',checkFinal);
+  }
 }
 
 function checkKeypad(){
   const val=document.getElementById('code').value;
-  if(val==='123'){rooms.Study.puzzle=null; moveRoom('Final'); alert('Keypad solved!');}
-  else alert('Incorrect code');
+  if(val==='123'){rooms.Study.puzzle=null; currentRoom='Vault'; updateRoom(); alert('Keypad solved!'); clickSound.play();}
+  else{alert('Incorrect code'); failSound.play();}
+}
+
+function checkCipher(){
+  const val=document.getElementById('cipher').value.toLowerCase();
+  if(val==='sun'){rooms.Vault.puzzle=null; currentRoom='Final'; updateRoom(); alert('Cipher solved!'); clickSound.play();}
+  else{alert('Incorrect code'); failSound.play();}
 }
 
 function checkFinal(){
   const val=document.getElementById('final').value.toLowerCase();
   if(val==='freedom'){clearInterval(timerInterval); gameContainer.classList.add('hidden'); victoryScreen.classList.remove('hidden'); victorySound.play(); startConfetti();}
-  else alert('Wrong code');
+  else{alert('Wrong code'); failSound.play();}
 }
 
 // -------------------
